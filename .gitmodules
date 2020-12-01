@@ -1,0 +1,12 @@
+[submodule "datasheets/BIGTREETECH-TMC2209-V1.2"]
+	path = datasheets/BIGTREETECH-TMC2209-V1.2
+	url = https://github.com/fenixil/BIGTREETECH-TMC2209-V1.2.git
+[submodule "datasheets/MKS-StepStick-Driver"]
+	path = datasheets/MKS-StepStick-Driver
+	url = https://github.com/fenixil/MKS-StepStick-Driver.git
+[submodule "libs/TMCStepper"]
+	path = libs/TMCStepper
+	url = https://github.com/teemuatlut/TMCStepper.git
+[submodule "datasheets\\BIGTREETECH-TMC5160-V1.0"]
+	path = datasheets\\BIGTREETECH-TMC5160-V1.0
+	url = https://github.com/bigtreetech/BIGTREETECH-TMC5160-V1.0.git

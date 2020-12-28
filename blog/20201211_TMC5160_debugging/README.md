@@ -49,10 +49,25 @@ After an hour I was pretty sure that everything is connected right - chip just o
 ## Hurray!
 
 For the last time I decided to wire everything up with the motor power supply turned on (VM). And... signal was there!
-![](./img/TMC5160_spi_signal.JPG)
+![](./img/TMC5160_spi_signal.png)
 
-I checked [datasheet for the driver](../../datasheets/TMC/TMC5160A_Datasheet_Rev1.14.pdf) and didn't find anything about requirements to power VM for operation. Perhaps this is a specific of [BIGREETECH PCB](../../datasheets/BIGTREETECH-TMC5160-V1.0/), I checked their documents and nothing mentioned there too. I was not able to find documentation for [v1.2](https://github.com/bigtreetech/BIGTREETECH-TMC5160-V1.0/issues/8) though. Is that normal at all :\ ?
+I checked [datasheet for the driver](../../datasheets/TMC/TMC5160A_Datasheet_Rev1.14.pdf) and didn't find anything about requirements to power VM for operation. Perhaps this is a specific of [BIGREETECH PCB](../../datasheets/), I checked their documents and nothing mentioned there too. I was not able to find documentation for [v1.2](https://github.com/bigtreetech/BIGTREETECH-TMC5160-V1.0/issues/8) though. Is that normal at all :\ ?
 
 Unfortunately, it was pure luck to make it work. On the other hand, I'm not blocked, I received a great present and I can continue building the project with these fancy Drivers. Lesson learned - test things with the prod like conditions.
 
-It's still not clear why it does not work without VM power, if somebody knows, please create a ticket with the details and I'll update the post.
+## Mystery uncovered
+I found the [issue](https://github.com/teemuatlut/TMCStepper/issues/119) which was very relevant to mine and I was happy to share [the solution](https://github.com/teemuatlut/TMCStepper/issues/119#issuecomment-743950954). 
+
+The rootcause was not clear until @laminarturbulent pointed to several FAQ posts about `SilentStepSticks`. This forced me to look closer at [TMC5160 datasheet](../../datasheets/TMC/TMC5160A_Datasheet_Rev1.14.pdf) and its Voltage regulators. 
+
+Indeed, the 'brain' is powered by `VCC` which is connected to `VM` power in the reference diagram, everything works as expected:
+
+![image](https://user-images.githubusercontent.com/10786072/103189393-674a0600-489a-11eb-8f37-4dc6eedb79fe.png)
+
+| Pin    | TQFP | QFN | Function                                                                                                                                                                                                                                                                                                                                                    |
+| ------ | ---- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| VCC_IO | 20   | 20  | 3.3V to 5V IO supply voltage for all digital pins.                                                                                                                                                                                                                                                                                                          |
+| VCC    | 29   | 30  | 5V supply input for digital circuitry within chip. Provide 100nF or bigger capacitor to GND (GND plane) near pin. Shall be supplied by 5VOUT. A 2.2 or 3.3 Ohm resistor is recommended for decoupling noise from 5VOUT. **When using an external supply, make sure, that VCC comes up before or in parallel to 5VOUT or VCC_IO, whichever comes up later**! |
+
+`VCC_IO` is just a logic level for the digital pins, but not a power supply for "digital circuitry within chip".
+

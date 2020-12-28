@@ -7,6 +7,6 @@
 [submodule "libs/TMCStepper"]
 	path = libs/TMCStepper
 	url = https://github.com/teemuatlut/TMCStepper.git
-[submodule "datasheets\\BIGTREETECH-TMC5160-V1.0"]
-	path = datasheets\\BIGTREETECH-TMC5160-V1.0
+[submodule "datasheets/BIGTREETECH-TMC5160-V1.0"]
+	path = datasheets/BIGTREETECH-TMC5160-V1.0
 	url = https://github.com/bigtreetech/BIGTREETECH-TMC5160-V1.0.git
